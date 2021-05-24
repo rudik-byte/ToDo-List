@@ -4,7 +4,7 @@ import rudik.model.Task;
 
 public class TaskTransformer {
 
-    public static TaskDTO convertToDo(Task task){
+    public static TaskDTO convertToDTO(Task task){
         return new TaskDTO(
                 task.getId(),
                 task.getName(),

@@ -36,6 +36,10 @@ public class ToDo {
     public ToDo() {
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }

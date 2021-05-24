@@ -1,4 +1,4 @@
-package rudik.controller;
+package rudik;
 
 public class TaskController {
 }
