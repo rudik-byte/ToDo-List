@@ -18,7 +18,7 @@ public class ToDo {
     private String title;
 
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime localDateTime;
+    private LocalDateTime createdAt;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -52,13 +52,9 @@ public class ToDo {
         this.title = title;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
-    }
+    public LocalDateTime getCreatedAt() { return createdAt; }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
-    }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
     public User getOwner() {
         return owner;
@@ -89,7 +85,7 @@ public class ToDo {
         return "ToDo{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", localDateTime=" + localDateTime +
+                ", localDateTime=" + createdAt +
                 ", owner=" + owner +
                 ", taskList=" + taskList +
                 ", collaborators=" + collaborators +
