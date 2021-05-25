@@ -92,6 +92,30 @@ public class User {
         return id;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<ToDo> getMyTodos() {
+        return myTodos;
+    }
+
+    public void setMyTodos(List<ToDo> myTodos) {
+        this.myTodos = myTodos;
+    }
+
+    public List<ToDo> getOtherTodos() {
+        return otherTodos;
+    }
+
+    public void setOtherTodos(List<ToDo> otherTodos) {
+        this.otherTodos = otherTodos;
+    }
+
     @Override
     public String toString() {
         return "User{" +
