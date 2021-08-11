@@ -1,9 +1,20 @@
 package rudik.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TaskDTO {
+
+    @NotNull
     private long id;
 
     @NotBlank(message = "The 'name' cannot be empty")
@@ -17,56 +28,4 @@ public class TaskDTO {
 
     @NotNull
     private long stateId;
-
-    public TaskDTO() {
-
-    }
-
-    public TaskDTO(long id, String name, String priority, long todoId, long stateId) {
-        this.id = id;
-        this.name = name;
-        this.priority = priority;
-        this.todoId = todoId;
-        this.stateId = stateId;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPriority() {
-        return priority;
-    }
-
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
-
-    public long getTodoId() {
-        return todoId;
-    }
-
-    public void setTodoId(long todoId) {
-        this.todoId = todoId;
-    }
-
-    public long getStateId() {
-        return stateId;
-    }
-
-    public void setStateId(long stateId) {
-        this.stateId = stateId;
-    }
 }
