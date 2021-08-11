@@ -1,11 +1,22 @@
 package rudik.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class User {
 
     private static final String REGEX_FOR_NAME = "[A-Z][a-z]+";
@@ -49,84 +60,4 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "todo_id"))
     private List<ToDo> otherTodos;
 
-    public User() {
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public List<ToDo> getMyTodos() {
-        return myTodos;
-    }
-
-    public void setMyTodos(List<ToDo> myTodos) {
-        this.myTodos = myTodos;
-    }
-
-    public List<ToDo> getOtherTodos() {
-        return otherTodos;
-    }
-
-    public void setOtherTodos(List<ToDo> otherTodos) {
-        this.otherTodos = otherTodos;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                ", myTodos=" + myTodos +
-                ", otherTodos=" + otherTodos +
-                '}';
-    }
 }

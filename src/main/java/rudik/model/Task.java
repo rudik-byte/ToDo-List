@@ -1,9 +1,16 @@
 package rudik.model;
 
+import lombok.*;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "tasks")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,63 +25,10 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "todo_id")
-    private ToDo toDo;
+    private ToDo todo;
 
     @ManyToOne
     @JoinColumn(name = "state_id")
-    private  State state;
+    private State state;
 
-    public Task() {
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Priority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(Priority priority) {
-        this.priority = priority;
-    }
-
-    public ToDo getToDo() {
-        return toDo;
-    }
-
-    public void setToDo(ToDo toDo) {
-        this.toDo = toDo;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", priority=" + priority +
-                ", toDo=" + toDo +
-                ", state=" + state +
-                '}';
-    }
 }
