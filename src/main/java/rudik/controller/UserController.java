@@ -1,53 +1,66 @@
 package rudik.controller;
 
-import org.springframework.stereotype.Controller;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import rudik.exception.EntityNotFoundException;
 import rudik.exception.NullEntityReferenceException;
 import rudik.model.User;
 import rudik.service.RoleService;
 import rudik.service.UserService;
 
-@Controller
+import javax.persistence.EntityNotFoundException;
+
+@RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
+
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     private final UserService userService;
     private final RoleService roleService;
 
-    public UserController(UserService userService, RoleService roleService) {
-        this.userService = userService;
-        this.roleService = roleService;
-    }
 
     @GetMapping("/create")
+    @ApiOperation("Create user")
     public String create(Model model) {
+        logger.info("Create user (GET)");
         model.addAttribute("user", new User());
         return "create-user";
     }
 
     @PostMapping("/create")
+    @ApiOperation("Create valid user")
     public String create(@Validated @ModelAttribute("user") User user, BindingResult result) throws EntityNotFoundException, NullEntityReferenceException, NullEntityReferenceException {
         if (result.hasErrors()) {
+            logger.warn("Create invalid user (POST)");
             return "create-user";
         }
         user.setPassword(user.getPassword());
         user.setRole(roleService.readById(2));
         User newUser = userService.create(user);
+        logger.info("Create valid user (POST)");
         return "redirect:/todos/all/users/" + newUser.getId();
     }
 
     @GetMapping("/{id}/read")
+    @ApiOperation("Read user info by id")
     public String read(@PathVariable long id, Model model) throws EntityNotFoundException {
+        logger.info("Read user by id " + id);
         User user = userService.readById(id);
         model.addAttribute("user", user);
         return "user-info";
     }
 
     @GetMapping("/{id}/update")
+    @ApiOperation("Update user by id")
     public String update(@PathVariable long id, Model model) throws EntityNotFoundException {
+        logger.info("Update user by id " + id + " (GET)");
         User user = userService.readById(id);
         model.addAttribute("user", user);
         model.addAttribute("roles", roleService.getAll());
@@ -55,14 +68,39 @@ public class UserController {
     }
 
 
-    @GetMapping("/{id}/delete")
+    @PostMapping("/{id}/update")
+    @ApiOperation("Update valid user by id")
+    public String update(@PathVariable long id, Model model, @Validated @ModelAttribute("user") User user, @RequestParam("roleId") long roleId, BindingResult result) throws EntityNotFoundException, NullEntityReferenceException {
+        User oldUser = userService.readById(id);
+        if (result.hasErrors()) {
+            user.setRole(oldUser.getRole());
+            model.addAttribute("roles", roleService.getAll());
+            logger.warn("Update invalid user (POST)");
+            return "update-user";
+        }
+        if (oldUser.getRole().getName().equals("USER")) {
+            user.setRole(oldUser.getRole());
+        } else {
+            user.setRole(roleService.readById(roleId));
+        }
+        userService.update(user);
+        logger.info("Update valid user (POST)");
+        return "redirect:/users/" + id + "/read";
+    }
+
+
+    @DeleteMapping("/{id}/delete")
+    @ApiOperation("Delete user by id")
     public String delete(@PathVariable("id") long id) throws EntityNotFoundException {
+        logger.info("Delete user with id " + id);
         userService.delete(id);
         return "redirect:/users/all";
     }
 
     @GetMapping("/all")
+    @ApiOperation("Get all users")
     public String getAll(Model model) {
+        logger.info("Get all users");
         model.addAttribute("users", userService.getAll());
         return "users-list";
     }
