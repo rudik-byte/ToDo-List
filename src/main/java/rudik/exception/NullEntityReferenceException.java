@@ -1,4 +1,4 @@
-package com.softserve.itacademy.exception;
+package rudik.exception;
 
 public class NullEntityReferenceException extends RuntimeException {
     public NullEntityReferenceException() {    }
