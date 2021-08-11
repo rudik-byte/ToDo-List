@@ -1,15 +1,17 @@
 package rudik.service;
 
-import rudik.exception.EntityNotFoundException;
-import rudik.exception.NullEntityReferenceException;
 import rudik.model.Role;
 
 import java.util.List;
 
 public interface RoleService {
-    Role create(Role role) throws NullEntityReferenceException;
-    Role readById(long id) throws EntityNotFoundException;
-    Role update(Role role) throws EntityNotFoundException, NullEntityReferenceException;
-    void delete(long id) throws EntityNotFoundException;
+    Role create(Role role);
+
+    Role readById(long id);
+
+    Role update(Role role);
+
+    void delete(long id);
+
     List<Role> getAll();
 }

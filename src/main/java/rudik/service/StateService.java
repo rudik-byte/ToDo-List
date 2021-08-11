@@ -1,16 +1,19 @@
 package rudik.service;
 
-import rudik.exception.EntityNotFoundException;
 import rudik.model.State;
 
 import java.util.List;
 
 public interface StateService {
     State create(State state);
-    State readById(long id) throws EntityNotFoundException;
-    State update(State state) throws EntityNotFoundException;
-    void delete(long id) throws EntityNotFoundException;
 
-    State getByName(String name) throws EntityNotFoundException;
+    State readById(long id);
+
+    State update(State state);
+
+    void delete(long id);
+
+    State getByName(String name);
+
     List<State> getAll();
 }
