@@ -1,11 +1,13 @@
 package rudik.controller;
 
-import org.springframework.stereotype.Controller;
+import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import rudik.exception.EntityNotFoundException;
 import rudik.exception.NullEntityReferenceException;
 import rudik.model.Task;
 import rudik.model.ToDo;
@@ -14,31 +16,32 @@ import rudik.service.TaskService;
 import rudik.service.ToDoService;
 import rudik.service.UserService;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 @RequestMapping("/todos")
+@RequiredArgsConstructor
 public class ToDoController {
+
     private final ToDoService todoService;
     private final TaskService taskService;
     private final UserService userService;
-
-    public ToDoController(ToDoService todoService, TaskService taskService, UserService userService) {
-        this.todoService = todoService;
-        this.taskService = taskService;
-        this.userService = userService;
-    }
+    private final Logger logger = LoggerFactory.getLogger(ToDoController.class);
 
     @GetMapping("/create/users/{owner_id}")
+    @ApiOperation("Create toDo")
     public String create(@PathVariable("owner_id") long ownerId, Model model) {
+        logger.info("Creating toDo");
         model.addAttribute("todo", new ToDo());
         model.addAttribute("ownerId", ownerId);
         return "create-todo";
     }
 
     @PostMapping("/create/users/{owner_id}")
+    @ApiOperation("Create toDo")
     public String create(@PathVariable("owner_id") long ownerId, @Validated @ModelAttribute("todo") ToDo todo, BindingResult result) throws NullEntityReferenceException, EntityNotFoundException {
         if (result.hasErrors()) {
             return "create-todo";
@@ -50,7 +53,9 @@ public class ToDoController {
     }
 
     @GetMapping("/{id}/tasks")
+    @ApiOperation("Read toDo tasks")
     public String read(@PathVariable long id, Model model) throws EntityNotFoundException {
+        logger.info("Read toDo id={}", id);
         ToDo todo = todoService.readById(id);
         List<Task> tasks = taskService.getByTodoId(id);
         List<User> users = userService.getAll().stream()
@@ -62,13 +67,16 @@ public class ToDoController {
     }
 
     @GetMapping("/{todo_id}/update/users/{owner_id}")
+    @ApiOperation("Update toDo")
     public String update(@PathVariable("todo_id") long todoId, @PathVariable("owner_id") long ownerId, Model model) throws EntityNotFoundException {
+        logger.info("Update toDo toDoId={}, ownerId={}", todoId, ownerId);
         ToDo todo = todoService.readById(todoId);
         model.addAttribute("todo", todo);
         return "update-todo";
     }
 
     @PostMapping("/{todo_id}/update/users/{owner_id}")
+    @ApiOperation("Update toDo")
     public String update(@PathVariable("todo_id") long todoId, @PathVariable("owner_id") long ownerId,
                          @Validated @ModelAttribute("todo") ToDo todo, BindingResult result) throws EntityNotFoundException, NullEntityReferenceException {
         if (result.hasErrors()) {
@@ -82,14 +90,18 @@ public class ToDoController {
         return "redirect:/todos/all/users/" + ownerId;
     }
 
-    @GetMapping("/{todo_id}/delete/users/{owner_id}")
+    @DeleteMapping("/{todo_id}/delete/users/{owner_id}")
+    @ApiOperation("Delete toDo")
     public String delete(@PathVariable("todo_id") long todoId, @PathVariable("owner_id") long ownerId) throws EntityNotFoundException {
+        logger.info("Delete toDo toDoId={}, ownerId={}", todoId, ownerId);
         todoService.delete(todoId);
         return "redirect:/todos/all/users/" + ownerId;
     }
 
     @GetMapping("/all/users/{user_id}")
+    @ApiOperation("Get all toDo")
     public String getAll(@PathVariable("user_id") long userId, Model model) throws EntityNotFoundException {
+        logger.info("GetAll toDo userId={}", userId);
         List<ToDo> todos = todoService.getByUserId(userId);
         model.addAttribute("todos", todos);
         model.addAttribute("user", userService.readById(userId));
@@ -97,7 +109,9 @@ public class ToDoController {
     }
 
     @GetMapping("/{id}/add")
-    public String addCollaborator(@PathVariable long id, @RequestParam("user_id") long userId)  throws EntityNotFoundException, NullEntityReferenceException  {
+    @ApiOperation("Add collaborator for toDo")
+    public String addCollaborator(@PathVariable long id, @RequestParam("user_id") long userId) throws EntityNotFoundException, NullEntityReferenceException {
+        logger.info("AddCollaborator toDoId = {}, userId={}", id, userId);
         ToDo todo = todoService.readById(id);
         List<User> collaborators = todo.getCollaborators();
         collaborators.add(userService.readById(userId));
@@ -107,7 +121,9 @@ public class ToDoController {
     }
 
     @GetMapping("/{id}/remove")
-    public String removeCollaborator(@PathVariable long id, @RequestParam("user_id") long userId)  throws EntityNotFoundException, NullEntityReferenceException  {
+    @ApiOperation("Remove Collaborator")
+    public String removeCollaborator(@PathVariable long id, @RequestParam("user_id") long userId) throws EntityNotFoundException, NullEntityReferenceException {
+        logger.info("RemoveCollaborator toDoId = {}, userId={}", id, userId);
         ToDo todo = todoService.readById(id);
         List<User> collaborators = todo.getCollaborators();
         collaborators.remove(userService.readById(userId));
