@@ -12,7 +12,7 @@ public class TaskTransformer {
                 task.getId(),
                 task.getName(),
                 task.getPriority().toString(),
-                task.getToDo().getId(),
+                task.getTodo().getId(),
                 task.getState().getId()
                 );
     }
@@ -21,7 +21,7 @@ public class TaskTransformer {
         task.setId(taskDto.getId());
         task.setName(taskDto.getName());
         task.setPriority(Priority.valueOf(taskDto.getPriority()));
-        task.setToDo(todo);
+        task.setTodo(todo);
         task.setState(state);
         return task;
     }
