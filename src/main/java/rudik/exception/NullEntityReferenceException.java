@@ -1,11 +1,9 @@
-package rudik.exception;
+package com.softserve.itacademy.exception;
 
-public class NullEntityReferenceException extends Exception {
+public class NullEntityReferenceException extends RuntimeException {
+    public NullEntityReferenceException() {    }
 
-    public NullEntityReferenceException() {
-    }
-
-    public NullEntityReferenceException(String message){
+    public NullEntityReferenceException(String message) {
         super(message);
     }
 }
