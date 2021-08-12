@@ -9,12 +9,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
-import rudik.exception.EntityNotFoundException;
 import rudik.exception.NullEntityReferenceException;
 import rudik.model.Role;
 import rudik.repository.RoleRepository;
 import rudik.service.impl.RoleServiceImpl;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

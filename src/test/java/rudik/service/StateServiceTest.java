@@ -55,7 +55,7 @@ public class StateServiceTest {
     }
 
     @Test
-    void readById() throws rudik.exception.EntityNotFoundException {
+    void readById() throws EntityNotFoundException {
         State state = new State();
 
         Mockito.doReturn(Optional.of(state))
@@ -74,7 +74,7 @@ public class StateServiceTest {
     }
 
     @Test
-    void update() throws rudik.exception.EntityNotFoundException {
+    void update() throws EntityNotFoundException {
         State state = new State();
 
         state.setName("New Name");
@@ -97,14 +97,14 @@ public class StateServiceTest {
     }
 
     @Test
-    void delete() throws rudik.exception.EntityNotFoundException {
+    void delete() throws EntityNotFoundException {
         State state = new State();
 
         Mockito.doReturn(Optional.of(state))
                 .when(repository)
                 .findById(state.getId());
 
-        service.delete(state.getId());
+      //  service.delete(state.getId());
 
         Mockito.verify(repository, Mockito.times(1)).delete(state);
     }
@@ -115,13 +115,13 @@ public class StateServiceTest {
 
         Mockito.when(repository.findById(state.getId()))
                 .thenReturn(Optional.empty());
-
+        repository.deleteById(state.getId());
         Assertions.assertThrows(EntityNotFoundException.class, () -> service.delete(state.getId()));
         Mockito.verify(repository, Mockito.times(1)).findById(state.getId());
     }
 
     @Test
-    void getByName() throws rudik.exception.EntityNotFoundException {
+    void getByName() throws EntityNotFoundException {
         State state = new State();
         state.setName("State Name");
 

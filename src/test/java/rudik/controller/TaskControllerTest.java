@@ -111,7 +111,7 @@ public class TaskControllerTest {
         task.setId(1);
         task.setName("name");
         task.setPriority(Priority.LOW);
-        task.setToDo(new ToDo());
+        task.setTodo(new ToDo());
         task.setState(new State());
 
         Mockito.doReturn(task)
@@ -137,14 +137,14 @@ public class TaskControllerTest {
         task.setId(1);
         task.setName("Name");
         task.setPriority(Priority.LOW);
-        task.setToDo(new ToDo());
+        task.setTodo(new ToDo());
         task.setState(new State());
 
-        task.getToDo().setId(5);
+        task.getTodo().setId(5);
 
         TaskDTO taskDto = TaskTransformer.convertToDTO(task);
 
-        Mockito.doReturn(task.getToDo())
+        Mockito.doReturn(task.getTodo())
                 .when(toDoService)
                 .readById(5);
         Mockito.doReturn(new State())
@@ -175,10 +175,10 @@ public class TaskControllerTest {
         task.setId(1);
         task.setName("");
         task.setPriority(Priority.LOW);
-        task.setToDo(new ToDo());
+        task.setTodo(new ToDo());
         task.setState(new State());
 
-        task.getToDo().setId(5);
+        task.getTodo().setId(5);
 
         TaskDTO taskDto = TaskTransformer.convertToDTO(task);
 

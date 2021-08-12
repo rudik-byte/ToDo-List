@@ -5,15 +5,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import rudik.model.ToDo;
 import rudik.model.User;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+
 import java.util.List;
 
-@DataJpaTest
+
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DataJpaTest
 public class ToDoRepositoryTest {
 
     @Autowired
@@ -25,6 +28,8 @@ public class ToDoRepositoryTest {
     @Autowired
     private RoleRepository repository;
 
+    @Autowired
+    private TestEntityManager entityManager;
 
     @Test
     public void getByUserId(){
@@ -41,7 +46,7 @@ public class ToDoRepositoryTest {
         user.setEmail("email@gmail.com");
         user.setFirstName("Valeriy");
         user.setLastName("Fantazer");
-        user.setPassword("lolikF");
+        user.setPassword("lolikF1");
         user.setMyTodos(Arrays.asList(toDo,toDo1));
 
         toDo.setOwner(user);

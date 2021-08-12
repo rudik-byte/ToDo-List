@@ -54,7 +54,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void updateValidUserTest() throws NullEntityReferenceException, rudik.exception.EntityNotFoundException {
+    public void updateValidUserTest() throws NullEntityReferenceException, EntityNotFoundException {
         Mockito.doReturn(Optional.of(user))
                 .when(userRepository)
                 .findById(user.getId());
@@ -71,7 +71,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void deleteExistingUserTest() throws rudik.exception.EntityNotFoundException {
+    public void deleteExistingUserTest() throws EntityNotFoundException {
         Mockito.doReturn(Optional.of(user))
                 .when(userRepository)
                 .findById(user.getId());

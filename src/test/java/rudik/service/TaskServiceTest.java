@@ -56,7 +56,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    void readById() throws rudik.exception.EntityNotFoundException {
+    void readById() throws EntityNotFoundException {
         Task task = new Task();
         task.setId(36);
 
@@ -75,7 +75,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    void update() throws NullEntityReferenceException, rudik.exception.EntityNotFoundException {
+    void update() throws NullEntityReferenceException, EntityNotFoundException {
         Task task = new Task();
         task.setId(85);
 
@@ -99,7 +99,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    void delete() throws rudik.exception.EntityNotFoundException {
+    void delete() throws EntityNotFoundException {
         Task task = new Task();
         task.setId(15);
 

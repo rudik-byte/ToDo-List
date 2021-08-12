@@ -54,7 +54,7 @@ public class ToDoServiceTest {
     }
 
     @Test
-    public void shouldCreatToDo() throws NullEntityReferenceException {
+    public void shouldCreatToDo() {
         Mockito.doReturn(expected).when(toDoRepository).save(expected);
 
         ToDo actual = toDoService.create(expected);
@@ -76,7 +76,7 @@ public class ToDoServiceTest {
     }
 
     @Test
-    public void shouldReadByiId() throws rudik.exception.EntityNotFoundException {
+    public void shouldReadByiId() {
         // Mockito.doReturn(toDoRepository.findById(anyLong())).when(toDoRepository).save(expected);
         when(toDoRepository.findById(anyLong())).thenReturn(Optional.of(expected));
         ToDo actual = toDoService.readById(TODO_ID);
@@ -98,7 +98,7 @@ public class ToDoServiceTest {
     }
 
     @Test
-    public void shouldUpdateToDo() throws NullEntityReferenceException, rudik.exception.EntityNotFoundException {
+    public void shouldUpdateToDo() {
         when(toDoRepository.findById(anyLong())).thenReturn(Optional.of(expected));
         Mockito.doReturn(expected).when(toDoRepository).save(expected);
 
@@ -121,7 +121,7 @@ public class ToDoServiceTest {
     }
 
     @Test
-    public void shouldDeleteToDo() throws rudik.exception.EntityNotFoundException {
+    public void shouldDeleteToDo(){
         when(toDoRepository.findById(anyLong())).thenReturn(Optional.of(expected));
 
         toDoService.delete(TODO_ID);

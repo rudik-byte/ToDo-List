@@ -23,25 +23,23 @@ public class HomeControllerTests {
     @Autowired
     private UserService userService;
 
-
     @Test
-    public void shouldGetAllUsersByHomeURLTest() throws Exception {
+    public void getAllUsersByHomeURLTest() throws Exception {
         List<User> expected = userService.getAll();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/home"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attributeExists("users"))
-                .andExpect(MockMvcResultMatchers.model().attribute("user", expected));
+                .andExpect(MockMvcResultMatchers.model().attribute("users", expected));
     }
 
     @Test
-    public void shouldGetAllUsersByEmptyURLTest() throws Exception {
+    public void getAllUsersByEmptyURLTest() throws Exception {
         List<User> expected = userService.getAll();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attributeExists("users"))
-                .andExpect(MockMvcResultMatchers.model().attribute("users",expected));
+                .andExpect(MockMvcResultMatchers.model().attribute("users", expected));
     }
-
 }

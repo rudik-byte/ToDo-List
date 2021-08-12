@@ -19,11 +19,11 @@ public class UserRepositoryTest {
 
     @Test
     public void getUserByExistingEmailTest() {
-        Assertions.assertEquals(4, userRepository.getUserByEmail("victor@gmail.com").getId());
+        Assertions.assertEquals(4, userRepository.getUserByEmail("mike@mail.com").getId());
     }
 
     @Test
     public void getUserByNotExistingEmailTest() {
-        Assertions.assertNull(userRepository.getUserByEmail("victoriya@mail.com"));
+        Assertions.assertNull(userRepository.getUserByEmail("victoriya@gmail.com"));
     }
 }
