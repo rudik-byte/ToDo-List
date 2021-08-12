@@ -1,23 +1,22 @@
 package rudik.service.impl;
 
-import rudik.exception.EntityNotFoundException;
-import rudik.model.State;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import rudik.model.State;
 import rudik.repository.StateRepository;
 import rudik.service.StateService;
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class StateServiceImpl implements StateService {
 
-    private StateRepository stateRepository;
-
-    public StateServiceImpl(StateRepository stateRepository) {
-        this.stateRepository = stateRepository;
-    }
+    private final StateRepository stateRepository;
 
     @Override
     public State create(State state) {
@@ -31,6 +30,7 @@ public class StateServiceImpl implements StateService {
     }
 
     @Override
+    @Transactional
     public State update(State state) throws EntityNotFoundException {
         //State oldState = readById(state.getId());
         return stateRepository.save(state);

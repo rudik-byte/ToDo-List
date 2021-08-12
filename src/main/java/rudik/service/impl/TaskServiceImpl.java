@@ -1,25 +1,23 @@
 package rudik.service.impl;
 
-import rudik.exception.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import rudik.exception.NullEntityReferenceException;
 import rudik.model.Task;
-import org.springframework.stereotype.Service;
 import rudik.repository.TaskRepository;
 import rudik.service.TaskService;
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class TaskServiceImpl implements TaskService {
 
-    private TaskRepository taskRepository;
-
-    public TaskServiceImpl(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-    }
-
+    private final TaskRepository taskRepository;
 
     @Override
     public Task create(Task task) throws NullEntityReferenceException {
@@ -37,6 +35,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public Task update(Task task) throws EntityNotFoundException, NullEntityReferenceException {
         if (!task.getName().isEmpty()) {
             //  Task oldTask = readById(task.getId());

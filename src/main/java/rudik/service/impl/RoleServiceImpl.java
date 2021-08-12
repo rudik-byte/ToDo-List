@@ -1,31 +1,32 @@
 package rudik.service.impl;
 
-import rudik.exception.EntityNotFoundException;
+import groovy.util.logging.Slf4j;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import rudik.exception.NullEntityReferenceException;
 import rudik.model.Role;
-import org.springframework.stereotype.Service;
 import rudik.repository.RoleRepository;
 import rudik.service.RoleService;
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class RoleServiceImpl implements RoleService {
 
-    private RoleRepository roleRepository;
-
-    public RoleServiceImpl(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
-    }
+    private final RoleRepository roleRepository;
 
     @Override
     public Role create(Role role) throws NullEntityReferenceException {
         try {
             return roleRepository.save(role);
         } catch (IllegalArgumentException e) {
-            throw new NullEntityReferenceException("Role cannot be a 'null'");
+            throw new NullEntityReferenceException("Role cannot be 'null'");
         }
     }
 
@@ -39,6 +40,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional
     public Role update(Role role) throws EntityNotFoundException, NullEntityReferenceException {
         // Role oldRole = readById(role.getId());
         try {

@@ -1,24 +1,23 @@
 package rudik.service.impl;
 
-import rudik.exception.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import rudik.exception.NullEntityReferenceException;
 import rudik.model.ToDo;
-import org.springframework.stereotype.Service;
 import rudik.repository.ToDoRepository;
 import rudik.service.ToDoService;
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ToDoServiceImpl implements ToDoService {
 
-    private ToDoRepository toDoRepository;
-
-    public ToDoServiceImpl(ToDoRepository toDoRepository) {
-        this.toDoRepository = toDoRepository;
-    }
+    private final ToDoRepository toDoRepository;
 
     @Override
     public ToDo create(ToDo todo) throws NullEntityReferenceException {
@@ -32,10 +31,11 @@ public class ToDoServiceImpl implements ToDoService {
     public ToDo readById(long id) throws EntityNotFoundException {
         Optional<ToDo> optional = toDoRepository.findById(id);
 
-        return optional.orElseThrow(() -> new EntityNotFoundException("ToDo with id =" + id + " does not exist!"));
+        return optional.orElseThrow(() -> new EntityNotFoundException("ToDo with id = " + id + " does not exist!"));
     }
 
     @Override
+    @Transactional
     public ToDo update(ToDo todo) throws EntityNotFoundException, NullEntityReferenceException {
         if (!todo.getTitle().isEmpty()) {
             ToDo oldTodo = readById(todo.getId());

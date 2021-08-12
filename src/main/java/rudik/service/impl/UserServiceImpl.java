@@ -1,24 +1,23 @@
 package rudik.service.impl;
 
-import rudik.exception.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import rudik.exception.NullEntityReferenceException;
 import rudik.model.User;
-import org.springframework.stereotype.Service;
 import rudik.repository.UserRepository;
 import rudik.service.UserService;
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
 
     @Override
     public User create(User user) throws NullEntityReferenceException {
@@ -39,6 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User update(User user) throws NullEntityReferenceException {
         //User oldUser = readById(user.getId());
         try {
