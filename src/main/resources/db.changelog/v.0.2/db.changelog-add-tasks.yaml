@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-tasks-data
+      author: Anton Rud
+      changes:
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: id
+                  value: 6
+              - column:
+                  name: name
+                  value: "Task #2"
+              - column:
+                  name: priority
+                  value: "LOW"
+              - column:
+                  name: todo_id
+                  value: 7
+              - column:
+                  name: state_id
+                  value: 5
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: id
+                  value: 5
+              - column:
+                  name: name
+                  value: "Task #1"
+              - column:
+                  name: priority
+                  value: "HIGH"
+              - column:
+                  name: todo_id
+                  value: 7
+              - column:
+                  name: state_id
+                  value: 8
+        - insert:
+            tableName: tasks
+            columns:
+              - column:
+                  name: id
+                  value: 7
+              - column:
+                  name: name
+                  value: "Task #1"
+              - column:
+                  name: priority
+                  value: "MEDIUM"
+              - column:
+                  name: todo_id
+                  value: 7
+              - column:
+                  name: state_id
+                  value: 6

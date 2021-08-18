@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-states-data
+      author: Anton Rud
+      changes:
+        - insert:
+            tableName: states
+            columns:
+              - column:
+                  name: id
+                  value: 5
+              - column:
+                  name: name
+                  value: "New"
+        - insert:
+            tableName: states
+            columns:
+              - column:
+                  name: id
+                  value: 6
+              - column:
+                  name: name
+                  value: "Doing"
+        - insert:
+            tableName: states
+            columns:
+              - column:
+                  name: id
+                  value: 7
+              - column:
+                  name: name
+                  value: "Verify"
+        - insert:
+            tableName: states
+            columns:
+              - column:
+                  name: id
+                  value: 8
+              - column:
+                  name: name
+                  value: "Done"

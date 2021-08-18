@@ -1,0 +1,125 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-todos-data
+      author: Anton Rud
+      changes:
+        - insert:
+            tableName: todos
+            columns:
+              - column:
+                  name: id
+                  value: 7
+              - column:
+                  name: title
+                  value: "Mike's To-Do #1"
+              - column:
+                  name: created_at
+                  value: "2021-08-18 14:00:04.810221"
+              - column:
+                  name: owner_id
+                  value: 4
+        - insert:
+            tableName: todos
+            columns:
+              - column:
+                  name: id
+                  value: 7
+              - column:
+                  name: title
+                  value: "Mike's To-Do #2"
+              - column:
+                  name: created_at
+                  value: "2021-08-18 14:10:04.810221"
+              - column:
+                  name: owner_id
+                  value: 4
+        - insert:
+            tableName: todos
+            columns:
+              - column:
+                  name: id
+                  value: 8
+              - column:
+                  name: title
+                  value: "Mike's To-Do #3"
+              - column:
+                  name: created_at
+                  value: "2021-08-18 14:20:04.810221"
+              - column:
+                  name: owner_id
+                  value: 4
+        - insert:
+            tableName: todos
+            columns:
+              - column:
+                  name: id
+                  value: 9
+              - column:
+                  name: title
+                  value: "Mike's To-Do #3"
+              - column:
+                  name: created_at
+                  value: "2021-08-18 14:20:04.810221"
+              - column:
+                  name: owner_id
+                  value: 4
+        - insert:
+            tableName: todos
+            columns:
+              - column:
+                  name: id
+                  value: 10
+              - column:
+                  name: title
+                  value: "Nick's To-Do #1"
+              - column:
+                  name: created_at
+                  value: "2021-08-18 14:22:04.810221"
+              - column:
+                  name: owner_id
+                  value: 5
+        - insert:
+            tableName: todos
+            columns:
+              - column:
+                  name: id
+                  value: 11
+              - column:
+                  name: title
+                  value: "Nick's To-Do #2"
+              - column:
+                  name: created_at
+                  value: "2021-08-18 14:24:04.810221"
+              - column:
+                  name: owner_id
+                  value: 5
+        - insert:
+            tableName: todos
+            columns:
+              - column:
+                  name: id
+                  value: 12
+              - column:
+                  name: title
+                  value: "Nora's To-Do #1"
+              - column:
+                  name: created_at
+                  value: "2021-08-18 14:25:04.810221"
+              - column:
+                  name: owner_id
+                  value: 6
+        - insert:
+            tableName: todos
+            columns:
+              - column:
+                  name: id
+                  value: 13
+              - column:
+                  name: title
+                  value: "Nora's To-Do #2"
+              - column:
+                  name: created_at
+                  value: "2021-08-18 14:30:04.810221"
+              - column:
+                  name: owner_id
+                  value: 6

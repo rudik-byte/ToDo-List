@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - include:
+      file: db.changelog-add-role.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-add-user.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-add-states.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-add-tasks.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-add-todos.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db.changelog-todo-collaborator.yaml
+      relativeToChangelogFile: true
