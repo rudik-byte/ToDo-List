@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import rudik.configartion.AbstractTestContainers;
 import rudik.exception.NullEntityReferenceException;
 import rudik.model.Role;
 import rudik.repository.RoleRepository;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class RoleServiceTest {
+public class RoleServiceTest extends AbstractTestContainers {
 
     // @Mock creates a mock.
     // @InjectMocks creates an instance of the

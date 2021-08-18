@@ -6,18 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import rudik.configartion.AbstractTestContainers;
 import rudik.model.ToDo;
 import rudik.model.User;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-
 import java.util.List;
 
 
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest
-public class ToDoRepositoryTest {
+public class ToDoRepositoryTest extends AbstractTestContainers {
 
     @Autowired
     private ToDoRepository toDoRepository;
@@ -32,7 +32,7 @@ public class ToDoRepositoryTest {
     private TestEntityManager entityManager;
 
     @Test
-    public void getByUserId(){
+    public void getByUserId() {
         ToDo toDo = new ToDo();
         toDo.setTitle("title2");
         toDo.setCreatedAt(LocalDateTime.now());
@@ -47,7 +47,7 @@ public class ToDoRepositoryTest {
         user.setFirstName("Valeriy");
         user.setLastName("Fantazer");
         user.setPassword("lolikF1");
-        user.setMyTodos(Arrays.asList(toDo,toDo1));
+        user.setMyTodos(Arrays.asList(toDo, toDo1));
 
         toDo.setOwner(user);
 
@@ -57,10 +57,10 @@ public class ToDoRepositoryTest {
         toDoRepository.save(toDo);
         toDoRepository.save(toDo1);
 
-        List<ToDo> expected = Arrays.asList(toDo,toDo1);
+        List<ToDo> expected = Arrays.asList(toDo, toDo1);
 
         List<ToDo> actual = toDoRepository.getByUserId(user.getId());
 
-        Assertions.assertEquals(expected.size(),actual.size());
+        Assertions.assertEquals(expected.size(), actual.size());
     }
 }

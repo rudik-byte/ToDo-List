@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import rudik.configartion.AbstractTestContainers;
 import rudik.exception.NullEntityReferenceException;
 import rudik.model.Priority;
 import rudik.model.Task;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class TaskServiceTest {
+public class TaskServiceTest extends AbstractTestContainers {
 
     @Autowired
     private TaskService service;
@@ -127,7 +128,7 @@ public class TaskServiceTest {
     @Test
     void getAll() throws NullEntityReferenceException {
         List<Task> tasks = Arrays.asList(new Task(), new Task(), new Task());
-        for (int i = 0; i <tasks.size(); i++) {
+        for (int i = 0; i < tasks.size(); i++) {
             service.create(tasks.get(i));
         }                                     //ловлю ошибку   tasks.forEach(service::create); ???
         Mockito.doReturn(tasks)

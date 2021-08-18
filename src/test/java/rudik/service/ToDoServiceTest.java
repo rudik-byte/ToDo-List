@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
+import rudik.configartion.AbstractTestContainers;
 import rudik.exception.NullEntityReferenceException;
 import rudik.model.ToDo;
 import rudik.model.User;
@@ -25,11 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 @SpringBootTest
-public class ToDoServiceTest {
+public class ToDoServiceTest extends AbstractTestContainers {
     @Mock
     private ToDoRepository toDoRepository;
 
@@ -111,7 +111,7 @@ public class ToDoServiceTest {
     }
 
     @Test
-    public void shouldThrowNullUpdateToDo(){
+    public void shouldThrowNullUpdateToDo() {
         Exception exception = assertThrows(NullEntityReferenceException.class, () -> {
             toDoService.update(null);
         });
@@ -121,7 +121,7 @@ public class ToDoServiceTest {
     }
 
     @Test
-    public void shouldDeleteToDo(){
+    public void shouldDeleteToDo() {
         when(toDoRepository.findById(anyLong())).thenReturn(Optional.of(expected));
 
         toDoService.delete(TODO_ID);
@@ -131,7 +131,7 @@ public class ToDoServiceTest {
     }
 
     @Test
-    public void shouldNotUpdateToDo(){
+    public void shouldNotUpdateToDo() {
         when(toDoRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(EntityNotFoundException.class, () -> {
@@ -143,7 +143,7 @@ public class ToDoServiceTest {
     }
 
     @Test
-    public void shouldThrowDeleteToDo(){
+    public void shouldThrowDeleteToDo() {
         when(toDoRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(EntityNotFoundException.class, () -> {
@@ -156,28 +156,28 @@ public class ToDoServiceTest {
     }
 
     @Test
-    public void shouldReturnNewArrayListGetAll(){
+    public void shouldReturnNewArrayListGetAll() {
         when(toDoRepository.findAll()).thenReturn(Collections.emptyList());
 
         List<ToDo> list = toDoService.getAll();
 
-        Assertions.assertEquals(0,list.size());
+        Assertions.assertEquals(0, list.size());
         verify(toDoRepository).findAll();
     }
 
     @Test
-    public void shouldReturnListToDoGetAll(){
-        List<ToDo>expected = Arrays.asList(new ToDo(), new ToDo());
+    public void shouldReturnListToDoGetAll() {
+        List<ToDo> expected = Arrays.asList(new ToDo(), new ToDo());
         Mockito.doReturn(expected).when(toDoRepository).findAll();
 
-        List<ToDo>actual = toDoService.getAll();
+        List<ToDo> actual = toDoService.getAll();
 
-        Assertions.assertEquals(expected.size(),actual.size());
+        Assertions.assertEquals(expected.size(), actual.size());
         verify(toDoRepository).findAll();
     }
 
     @Test
-    public void shouldReturnListGetByUserId(){
+    public void shouldReturnListGetByUserId() {
         when(toDoRepository.getByUserId(anyLong())).thenReturn(Collections.emptyList());
 
         List<ToDo> actual = toDoService.getByUserId(USER_ID);
@@ -187,7 +187,7 @@ public class ToDoServiceTest {
     }
 
     @Test
-    public void shouldReturnListToDoGetByUserId(){
+    public void shouldReturnListToDoGetByUserId() {
         List<ToDo> exp = Arrays.asList(new ToDo(), new ToDo());
 
         when(toDoRepository.getByUserId(anyLong())).thenReturn(exp);
@@ -195,6 +195,6 @@ public class ToDoServiceTest {
         List<ToDo> act = toDoService.getByUserId(USER_ID);
 
         verify(toDoRepository).getByUserId(anyLong());
-        Assertions.assertEquals(exp,act);
+        Assertions.assertEquals(exp, act);
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import rudik.configartion.AbstractTestContainers;
 import rudik.exception.NullEntityReferenceException;
 import rudik.model.State;
 import rudik.model.Task;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class StateServiceTest {
+public class StateServiceTest extends AbstractTestContainers {
     @Autowired
     private StateService service;
 
@@ -104,7 +105,7 @@ public class StateServiceTest {
                 .when(repository)
                 .findById(state.getId());
 
-      //  service.delete(state.getId());
+        //  service.delete(state.getId());
 
         Mockito.verify(repository, Mockito.times(1)).delete(state);
     }

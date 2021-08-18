@@ -1,0 +1,21 @@
+spring:
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+    properties:
+      hibernate:
+        default-schema: public
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+  test:
+    database:
+      replace: none
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    contexts: test

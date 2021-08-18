@@ -7,9 +7,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpMethod;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.transaction.annotation.Transactional;
+import rudik.configartion.AbstractTestContainers;
 import rudik.dto.TaskDTO;
 import rudik.dto.TaskTransformer;
 import rudik.model.Priority;
@@ -23,9 +26,11 @@ import rudik.service.ToDoService;
 import java.util.Arrays;
 import java.util.List;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class TaskControllerTest {
+@Transactional
+@ActiveProfiles("test")
+public class TaskControllerTest extends AbstractTestContainers {
 
     @Autowired
     private MockMvc mockMvc;
@@ -40,22 +45,22 @@ public class TaskControllerTest {
     private StateService stateService;
 
     @Test
-    void shouldGetCreate() throws Exception{
+    void shouldGetCreate() throws Exception {
         Mockito.doReturn(new ToDo())
                 .when(toDoService)
                 .readById(5);
 
         ToDo expected = toDoService.readById(5);
 
-        mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET,"/tasks/create/todos/5"))
+        mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.GET, "/tasks/create/todos/5"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.model().attributeExists("task"))
-                .andExpect(MockMvcResultMatchers.model().attribute("todo",expected))
+                .andExpect(MockMvcResultMatchers.model().attribute("todo", expected))
                 .andExpect(MockMvcResultMatchers.model().attribute("priorities", Priority.values()));
     }
 
     @Test
-    void shouldPostCreate() throws Exception{
+    void shouldPostCreate() throws Exception {
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setName("Victor");
         taskDTO.setPriority("LOW");
@@ -69,10 +74,10 @@ public class TaskControllerTest {
                 .when(stateService)
                 .getByName("Victor");
 
-        mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST,"/tasks/create/todos/5")
-                .param("name",taskDTO.getName())
-                .param("priority",taskDTO.getPriority())
-                .param("todoId",String.valueOf(taskDTO.getTodoId())))
+        mockMvc.perform(MockMvcRequestBuilders.request(HttpMethod.POST, "/tasks/create/todos/5")
+                .param("name", taskDTO.getName())
+                .param("priority", taskDTO.getPriority())
+                .param("todoId", String.valueOf(taskDTO.getTodoId())))
                 .andExpect(MockMvcResultMatchers.status().isFound())
                 .andExpect(MockMvcResultMatchers.model().hasNoErrors())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/todos/5/tasks"));

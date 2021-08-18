@@ -8,13 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import rudik.configartion.AbstractTestContainers;
 import rudik.model.State;
 import static org.assertj.core.api.Assertions.fail;
 import java.util.ArrayList;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)   //Учтите, что при тестировании с помощью @DataJpaTest используются встроенные СУБД в оперативной памяти. Для тестирования же с настоящей базой данных необходимо снабдить класс теста аннотацией @AutoConfigureTestDatabase(replace=Replace.NONE).
-public class StateRepositoryTest {
+public class StateRepositoryTest extends AbstractTestContainers {
 
     @Autowired
     private StateRepository repository;

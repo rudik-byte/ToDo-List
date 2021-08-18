@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import rudik.configartion.AbstractTestContainers;
 import rudik.exception.NullEntityReferenceException;
 import rudik.model.User;
 import rudik.repository.UserRepository;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class UserServiceTest {
+public class UserServiceTest extends AbstractTestContainers {
     @Autowired
     private UserService userService;
 
@@ -50,7 +51,7 @@ public class UserServiceTest {
     public void createNullUserTest() throws NullEntityReferenceException {
         Mockito.when(userService.create(null)).thenThrow(new IllegalArgumentException());
         Assertions.assertThrows(NullEntityReferenceException.class,
-                ()-> userService.create(null));
+                () -> userService.create(null));
     }
 
     @Test
@@ -67,7 +68,7 @@ public class UserServiceTest {
     @Test
     public void updateNullUserTest() {
         Assertions.assertThrows(NullEntityReferenceException.class,
-                ()-> userService.update(null));
+                () -> userService.update(null));
     }
 
     @Test
