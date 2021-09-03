@@ -3,11 +3,11 @@ databaseChangeLog:
         file: db.changelog-role.yaml
         relativeToChangelogFile: true
     - include:
-          file: db.changelog-state.yaml
-          relativeToChangelogFile: true
+        file: db.changelog-state.yaml
+        relativeToChangelogFile: true
     - include:
-          file: db.changelog-task.yaml
-          relativeToChangelogFile: true
+        file: db.changelog-task.yaml
+        relativeToChangelogFile: true
     - include:
         file: db.changelog-todo.yaml
         relativeToChangelogFile: true

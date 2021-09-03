@@ -4,4 +4,4 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: v.0.2/db.changelog-master.yaml
-      relativChangelogFile: true
+      relativeToChangelogFile: true

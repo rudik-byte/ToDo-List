@@ -6,8 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.3.RELEASE</version>
-        <relativePath/>
+        <version>2.3.12.RELEASE</version>
     </parent>
 
     <groupId>com.github.rudik-byte</groupId>
@@ -18,13 +17,17 @@
 
     <properties>
         <java.version>11</java.version>
+        <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
         <springfox.version>3.0.0</springfox.version>
         <lombok.version>1.18.20</lombok.version>
         <org.testcontainers.version>1.15.3</org.testcontainers.version>
         <io.rest-assured.version>4.3.1</io.rest-assured.version>
         <slf4j.version>1.7.31</slf4j.version>
         <logback.version>1.2.3</logback.version>
+        <liquibase.version>4.3.5</liquibase.version>
     </properties>
+
+
 
     <dependencies>
         <!-- Test -->
@@ -134,7 +137,12 @@
             <artifactId>spring-boot-maven-plugin</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-
+        <!-- Liquibase -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
+        </dependency>
         <!-- Swagger -->
         <dependency>
             <groupId>io.springfox</groupId>
