@@ -9,6 +9,3 @@ spring:
     username: postgres
     password: asdqwe
     driver-class-name: org.postgresql.Driver
-  liquibase:
-    enabled: true
-    change-log: db.changelog/db.changelog-master.yaml
