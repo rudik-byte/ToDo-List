@@ -2,7 +2,10 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     open-in-view: false
   datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: asdqwe
     driver-class-name: org.postgresql.Driver
