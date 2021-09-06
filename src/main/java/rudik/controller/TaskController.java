@@ -14,6 +14,7 @@ import rudik.dto.TaskTransformer;
 import rudik.exception.NullEntityReferenceException;
 import rudik.model.Priority;
 import rudik.model.Task;
+import rudik.security.annotation.UserAccess;
 import rudik.service.StateService;
 import rudik.service.TaskService;
 import rudik.service.ToDoService;
@@ -34,6 +35,7 @@ public class TaskController {
 
     @GetMapping("/create/todos/{todo_id}")
     @ApiOperation("Create new Task")
+    @UserAccess
     public String create(@PathVariable("todo_id") long todoId, Model model) throws EntityNotFoundException {
         LOG.info("GET /tasks/create/todos/" + todoId);
         model.addAttribute("task", new TaskDTO());
@@ -44,6 +46,7 @@ public class TaskController {
 
     @PostMapping("/create/todos/{todo_id}")
     @ApiOperation("Create task")
+    @UserAccess
     public String create(@PathVariable("todo_id") long todoId, Model model,
                          @Validated @ModelAttribute("task") TaskDTO taskDto, BindingResult result) throws EntityNotFoundException, NullEntityReferenceException {
         LOG.info("POST /tasks/create/todos/" + todoId);
@@ -64,6 +67,7 @@ public class TaskController {
 
     @GetMapping("/{task_id}/update/todos/{todo_id}")
     @ApiOperation("Update Task")
+    @UserAccess
     public String update(@PathVariable("task_id") long taskId, @PathVariable("todo_id") long todoId, Model model) throws EntityNotFoundException {
         LOG.info("GET /tasks/" + taskId + "/update/todos/" + todoId);
         TaskDTO taskDto = TaskTransformer.convertToDTO(taskService.readById(taskId));
@@ -75,6 +79,7 @@ public class TaskController {
 
     @PostMapping("/{task_id}/update/todos/{todo_id}")
     @ApiOperation("Update task")
+    @UserAccess
     public String update(@PathVariable("task_id") long taskId, @PathVariable("todo_id") long todoId, Model model,
                          @Validated @ModelAttribute("task") TaskDTO taskDto, BindingResult result) throws EntityNotFoundException, NullEntityReferenceException {
         LOG.info("POST /tasks/" + taskId + "/update/todos/" + todoId);
@@ -95,6 +100,7 @@ public class TaskController {
 
     @DeleteMapping("/{task_id}/delete/todos/{todo_id}")
     @ApiOperation("Delete Task")
+    @UserAccess
     public String delete(@PathVariable("task_id") long taskId, @PathVariable("todo_id") long todoId) throws EntityNotFoundException {
         LOG.info("GET /tasks/" + taskId + "/delete/todos/" + todoId);
         taskService.delete(taskId);

@@ -12,6 +12,7 @@ import rudik.exception.NullEntityReferenceException;
 import rudik.model.Task;
 import rudik.model.ToDo;
 import rudik.model.User;
+import rudik.security.annotation.UserAccess;
 import rudik.service.TaskService;
 import rudik.service.ToDoService;
 import rudik.service.UserService;
@@ -33,6 +34,7 @@ public class ToDoController {
 
     @GetMapping("/create/users/{owner_id}")
     @ApiOperation("Create toDo")
+    @UserAccess
     public String create(@PathVariable("owner_id") long ownerId, Model model) {
         logger.info("Creating toDo");
         model.addAttribute("todo", new ToDo());
@@ -42,6 +44,7 @@ public class ToDoController {
 
     @PostMapping("/create/users/{owner_id}")
     @ApiOperation("Create toDo")
+    @UserAccess
     public String create(@PathVariable("owner_id") long ownerId, @Validated @ModelAttribute("todo") ToDo todo, BindingResult result) throws NullEntityReferenceException, EntityNotFoundException {
         if (result.hasErrors()) {
             return "create-todo";
@@ -54,6 +57,7 @@ public class ToDoController {
 
     @GetMapping("/{id}/tasks")
     @ApiOperation("Read toDo tasks")
+    @UserAccess
     public String read(@PathVariable long id, Model model) throws EntityNotFoundException {
         logger.info("Read toDo id={}", id);
         ToDo todo = todoService.readById(id);
@@ -68,6 +72,7 @@ public class ToDoController {
 
     @GetMapping("/{todo_id}/update/users/{owner_id}")
     @ApiOperation("Update toDo")
+    @UserAccess
     public String update(@PathVariable("todo_id") long todoId, @PathVariable("owner_id") long ownerId, Model model) throws EntityNotFoundException {
         logger.info("Update toDo toDoId={}, ownerId={}", todoId, ownerId);
         ToDo todo = todoService.readById(todoId);
@@ -77,6 +82,7 @@ public class ToDoController {
 
     @PostMapping("/{todo_id}/update/users/{owner_id}")
     @ApiOperation("Update toDo")
+    @UserAccess
     public String update(@PathVariable("todo_id") long todoId, @PathVariable("owner_id") long ownerId,
                          @Validated @ModelAttribute("todo") ToDo todo, BindingResult result) throws EntityNotFoundException, NullEntityReferenceException {
         if (result.hasErrors()) {
@@ -92,6 +98,7 @@ public class ToDoController {
 
     @DeleteMapping("/{todo_id}/delete/users/{owner_id}")
     @ApiOperation("Delete toDo")
+    @UserAccess
     public String delete(@PathVariable("todo_id") long todoId, @PathVariable("owner_id") long ownerId) throws EntityNotFoundException {
         logger.info("Delete toDo toDoId={}, ownerId={}", todoId, ownerId);
         todoService.delete(todoId);
@@ -100,6 +107,7 @@ public class ToDoController {
 
     @GetMapping("/all/users/{user_id}")
     @ApiOperation("Get all toDo")
+    @UserAccess
     public String getAll(@PathVariable("user_id") long userId, Model model) throws EntityNotFoundException {
         logger.info("GetAll toDo userId={}", userId);
         List<ToDo> todos = todoService.getByUserId(userId);
@@ -110,6 +118,7 @@ public class ToDoController {
 
     @GetMapping("/{id}/add")
     @ApiOperation("Add collaborator for toDo")
+    @UserAccess
     public String addCollaborator(@PathVariable long id, @RequestParam("user_id") long userId) throws EntityNotFoundException, NullEntityReferenceException {
         logger.info("AddCollaborator toDoId = {}, userId={}", id, userId);
         ToDo todo = todoService.readById(id);
@@ -122,6 +131,7 @@ public class ToDoController {
 
     @GetMapping("/{id}/remove")
     @ApiOperation("Remove Collaborator")
+    @UserAccess
     public String removeCollaborator(@PathVariable long id, @RequestParam("user_id") long userId) throws EntityNotFoundException, NullEntityReferenceException {
         logger.info("RemoveCollaborator toDoId = {}, userId={}", id, userId);
         ToDo todo = todoService.readById(id);

@@ -11,3 +11,7 @@ spring:
     password: asdqwe
     driver-class-name: org.postgresql.Driver
     initialization-mode: always
+jwt:
+  expiration:
+    access: 120
+    refresh: 3600
