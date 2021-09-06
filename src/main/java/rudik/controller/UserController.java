@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -28,6 +29,7 @@ public class UserController {
 
     @GetMapping("/create")
     @ApiOperation("Create user")
+    @PreAuthorize("hasAuthority('ADMIN') or isAnonymous()")
     public String create(Model model) {
         logger.info("Create user (GET)");
         model.addAttribute("user", new User());
@@ -36,6 +38,7 @@ public class UserController {
 
     @PostMapping("/create")
     @ApiOperation("Create valid user")
+    @PreAuthorize("hasAuthority('ADMIN') or isAnonymous()")
     public String create(@Validated @ModelAttribute("user") User user, BindingResult result) throws EntityNotFoundException, NullEntityReferenceException, NullEntityReferenceException {
         if (result.hasErrors()) {
             logger.warn("Create invalid user (POST)");
@@ -50,6 +53,7 @@ public class UserController {
 
     @GetMapping("/{id}/read")
     @ApiOperation("Read user info by id")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and authentication.details.id == #id")
     public String read(@PathVariable long id, Model model) throws EntityNotFoundException {
         logger.info("Read user by id " + id);
         User user = userService.readById(id);
@@ -59,6 +63,7 @@ public class UserController {
 
     @GetMapping("/{id}/update")
     @ApiOperation("Update user by id")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and authentication.details.id == #id")
     public String update(@PathVariable long id, Model model) throws EntityNotFoundException {
         logger.info("Update user by id " + id + " (GET)");
         User user = userService.readById(id);
@@ -70,6 +75,7 @@ public class UserController {
 
     @PostMapping("/{id}/update")
     @ApiOperation("Update valid user by id")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and authentication.details.id == #id")
     public String update(@PathVariable long id, Model model, @Validated @ModelAttribute("user") User user, @RequestParam("roleId") long roleId, BindingResult result) throws EntityNotFoundException, NullEntityReferenceException {
         User oldUser = userService.readById(id);
         if (result.hasErrors()) {
@@ -91,6 +97,7 @@ public class UserController {
 
     @DeleteMapping("/{id}/delete")
     @ApiOperation("Delete user by id")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and authentication.details.id == #id")
     public String delete(@PathVariable("id") long id) throws EntityNotFoundException {
         logger.info("Delete user with id " + id);
         userService.delete(id);
@@ -99,6 +106,7 @@ public class UserController {
 
     @GetMapping("/all")
     @ApiOperation("Get all users")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getAll(Model model) {
         logger.info("Get all users");
         model.addAttribute("users", userService.getAll());

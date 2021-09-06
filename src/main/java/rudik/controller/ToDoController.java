@@ -4,6 +4,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -12,6 +14,7 @@ import rudik.exception.NullEntityReferenceException;
 import rudik.model.Task;
 import rudik.model.ToDo;
 import rudik.model.User;
+import rudik.security.WebAuthToken;
 import rudik.service.TaskService;
 import rudik.service.ToDoService;
 import rudik.service.UserService;
@@ -33,6 +36,7 @@ public class ToDoController {
 
     @GetMapping("/create/users/{owner_id}")
     @ApiOperation("Create toDo")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and authentication.details.id == #ownerId")
     public String create(@PathVariable("owner_id") long ownerId, Model model) {
         logger.info("Creating toDo");
         model.addAttribute("todo", new ToDo());
@@ -42,6 +46,7 @@ public class ToDoController {
 
     @PostMapping("/create/users/{owner_id}")
     @ApiOperation("Create toDo")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and authentication.details.id == #ownerId")
     public String create(@PathVariable("owner_id") long ownerId, @Validated @ModelAttribute("todo") ToDo todo, BindingResult result) throws NullEntityReferenceException, EntityNotFoundException {
         if (result.hasErrors()) {
             return "create-todo";
@@ -54,6 +59,7 @@ public class ToDoController {
 
     @GetMapping("/{id}/tasks")
     @ApiOperation("Read toDo tasks")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and @toDoController.canReadToDo(#id)")
     public String read(@PathVariable long id, Model model) throws EntityNotFoundException {
         logger.info("Read toDo id={}", id);
         ToDo todo = todoService.readById(id);
@@ -68,6 +74,7 @@ public class ToDoController {
 
     @GetMapping("/{todo_id}/update/users/{owner_id}")
     @ApiOperation("Update toDo")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and authentication.details.id == #ownerId")
     public String update(@PathVariable("todo_id") long todoId, @PathVariable("owner_id") long ownerId, Model model) throws EntityNotFoundException {
         logger.info("Update toDo toDoId={}, ownerId={}", todoId, ownerId);
         ToDo todo = todoService.readById(todoId);
@@ -77,6 +84,7 @@ public class ToDoController {
 
     @PostMapping("/{todo_id}/update/users/{owner_id}")
     @ApiOperation("Update toDo")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and authentication.details.id == #ownerId")
     public String update(@PathVariable("todo_id") long todoId, @PathVariable("owner_id") long ownerId,
                          @Validated @ModelAttribute("todo") ToDo todo, BindingResult result) throws EntityNotFoundException, NullEntityReferenceException {
         if (result.hasErrors()) {
@@ -92,6 +100,7 @@ public class ToDoController {
 
     @DeleteMapping("/{todo_id}/delete/users/{owner_id}")
     @ApiOperation("Delete toDo")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and authentication.details.id == #ownerId")
     public String delete(@PathVariable("todo_id") long todoId, @PathVariable("owner_id") long ownerId) throws EntityNotFoundException {
         logger.info("Delete toDo toDoId={}, ownerId={}", todoId, ownerId);
         todoService.delete(todoId);
@@ -100,6 +109,7 @@ public class ToDoController {
 
     @GetMapping("/all/users/{user_id}")
     @ApiOperation("Get all toDo")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and authentication.details.id == #userId")
     public String getAll(@PathVariable("user_id") long userId, Model model) throws EntityNotFoundException {
         logger.info("GetAll toDo userId={}", userId);
         List<ToDo> todos = todoService.getByUserId(userId);
@@ -110,6 +120,8 @@ public class ToDoController {
 
     @GetMapping("/{id}/add")
     @ApiOperation("Add collaborator for toDo")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') " +
+            "and authentication.details.id == @toDoServiceImpl.readById(#id).owner.id")
     public String addCollaborator(@PathVariable long id, @RequestParam("user_id") long userId) throws EntityNotFoundException, NullEntityReferenceException {
         logger.info("AddCollaborator toDoId = {}, userId={}", id, userId);
         ToDo todo = todoService.readById(id);
@@ -122,6 +134,8 @@ public class ToDoController {
 
     @GetMapping("/{id}/remove")
     @ApiOperation("Remove Collaborator")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') " +
+            "and authentication.details.id == @toDoServiceImpl.readById(#id).owner.id")
     public String removeCollaborator(@PathVariable long id, @RequestParam("user_id") long userId) throws EntityNotFoundException, NullEntityReferenceException {
         logger.info("RemoveCollaborator toDoId = {}, userId={}", id, userId);
         ToDo todo = todoService.readById(id);
@@ -130,5 +144,15 @@ public class ToDoController {
         todo.setCollaborators(collaborators);
         todoService.update(todo);
         return "redirect:/todos/" + id + "/tasks";
+    }
+
+    public boolean canReadToDo(long todoId) {
+        WebAuthToken authentication
+                = (WebAuthToken) SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getDetails();
+        ToDo todo = todoService.readById(todoId);
+        boolean isCollaborator = todo.getCollaborators().stream().anyMatch((collaborator)
+                -> collaborator.getId().equals(user.getId()));
+        return user.getId().equals(todo.getOwner().getId()) || isCollaborator;
     }
 }

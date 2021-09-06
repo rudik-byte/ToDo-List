@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -33,6 +34,7 @@ public class TaskController {
 
     @GetMapping("/create/todos/{todo_id}")
     @ApiOperation("Create new Task")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and @toDoController.canReadToDo(#todoId)")
     public String create(@PathVariable("todo_id") long todoId, Model model) throws EntityNotFoundException {
         LOG.info("GET /tasks/create/todos/" + todoId);
         model.addAttribute("task", new TaskDTO());
@@ -43,6 +45,7 @@ public class TaskController {
 
     @PostMapping("/create/todos/{todo_id}")
     @ApiOperation("Create task")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and @toDoController.canReadToDo(#todoId)")
     public String create(@PathVariable("todo_id") long todoId, Model model,
                          @Validated @ModelAttribute("task") TaskDTO taskDto, BindingResult result) throws EntityNotFoundException, NullEntityReferenceException {
         LOG.info("POST /tasks/create/todos/" + todoId);
@@ -63,6 +66,7 @@ public class TaskController {
 
     @GetMapping("/{task_id}/update/todos/{todo_id}")
     @ApiOperation("Update Task")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and @toDoController.canReadToDo(#todoId)")
     public String update(@PathVariable("task_id") long taskId, @PathVariable("todo_id") long todoId, Model model) throws EntityNotFoundException {
         LOG.info("GET /tasks/" + taskId + "/update/todos/" + todoId);
         TaskDTO taskDto = TaskTransformer.convertToDTO(taskService.readById(taskId));
@@ -74,6 +78,7 @@ public class TaskController {
 
     @PostMapping("/{task_id}/update/todos/{todo_id}")
     @ApiOperation("Update task")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and @toDoController.canReadToDo(#todoId)")
     public String update(@PathVariable("task_id") long taskId, @PathVariable("todo_id") long todoId, Model model,
                          @Validated @ModelAttribute("task") TaskDTO taskDto, BindingResult result) throws EntityNotFoundException, NullEntityReferenceException {
         LOG.info("POST /tasks/" + taskId + "/update/todos/" + todoId);
@@ -94,6 +99,7 @@ public class TaskController {
 
     @DeleteMapping("/{task_id}/delete/todos/{todo_id}")
     @ApiOperation("Delete Task")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER') and @toDoController.canReadToDo(#todoId)")
     public String delete(@PathVariable("task_id") long taskId, @PathVariable("todo_id") long todoId) throws EntityNotFoundException {
         LOG.info("GET /tasks/" + taskId + "/delete/todos/" + todoId);
         taskService.delete(taskId);
