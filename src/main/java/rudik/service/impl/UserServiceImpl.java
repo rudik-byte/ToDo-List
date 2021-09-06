@@ -1,6 +1,8 @@
 package rudik.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import rudik.exception.NullEntityReferenceException;
 import rudik.model.User;
@@ -59,6 +61,15 @@ public class UserServiceImpl implements UserService {
     public List<User> getAll() {
         List<User> userList = userRepository.findAll();
         return userList.isEmpty() ? new ArrayList<>() : userList;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        User user = userRepository.getUserByEmail(userName);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not Found!");
+        }
+        return user;
     }
 }
 
